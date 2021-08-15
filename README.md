@@ -21,5 +21,6 @@ iOS
 ```bash
 ./gradlew ios:launchIPhoneSimulator
 ```
-
-In dedication to my cat. RIP
+RIP </br>
+In dedication to my cat </br>
+Forever wandering amongst all the fish

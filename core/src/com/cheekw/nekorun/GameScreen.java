@@ -31,6 +31,8 @@ public class GameScreen extends AbstractGameScreen {
     private float stateTimer;
 
     private TextureRegion bulletTexture;
+    private TextureRegion heartFilled;
+    private TextureRegion heartEmpty;
     private Sound bulletSound;
 
     private Music music;
@@ -40,11 +42,11 @@ public class GameScreen extends AbstractGameScreen {
     private int fishEaten;
     private int life;
 
+
     private BitmapFont normalFont;
 
     public GameScreen(final NekoRun game) {
         super(game);
-
         normalFont = Assets.instance.fonts.small;
 
         life = 3;
@@ -54,7 +56,10 @@ public class GameScreen extends AbstractGameScreen {
         nekoWalk = Assets.instance.neko.walkAnimation;
         bulletTexture = Assets.instance.bullet.blue.get(1);
 
-        background = Assets.instance.background.hills;
+        heartFilled = Assets.instance.hearts.filled;
+        heartEmpty = Assets.instance.hearts.empty;
+
+        background = Assets.instance.background.redMountains;
         backgroundOffsets = new float[5];
 
         backgroundMaxScrollingSpeed = Constants.GAME_WIDTH / 16.0f;
@@ -91,7 +96,7 @@ public class GameScreen extends AbstractGameScreen {
         camera.update();
 
         // tell the SpriteBatch to render in the coordinate system specified by camera
-        game.batch.setProjectionMatrix(camera.combined);
+//        game.batch.setProjectionMatrix(camera.combined);
 
         // begin a new batch
         game.batch.begin();
@@ -125,10 +130,23 @@ public class GameScreen extends AbstractGameScreen {
 
     private void renderHud() {
         String fishEatenText = "fish eaten: " + fishEaten;
-        String lifeText = "life: " + life;
+        String lifeText = "life: ";
         GlyphLayout fishEatenLayout = new GlyphLayout(normalFont, fishEatenText);
+        GlyphLayout lifeLayout = new GlyphLayout(normalFont, lifeText);
+
         normalFont.draw(game.batch, fishEatenText, 4, Constants.GAME_HEIGHT - 4);
         normalFont.draw(game.batch, lifeText, 4, Constants.GAME_HEIGHT - fishEatenLayout.height - 8);
+        float y = Constants.GAME_HEIGHT - fishEatenLayout.height - 20;
+        for (int i = 0; i < 3; i++) {
+            float x = 2 + lifeLayout.width + i * 16 + i * 2;
+            if (life >= i + 1) {
+                game.batch.draw(heartFilled, x, y, 16.0f, 16.0f);
+            } else {
+                game.batch.draw(heartEmpty, x, y, 16.0f, 16.0f);
+            }
+        }
+
+
     }
 
     private void controlBullets() {

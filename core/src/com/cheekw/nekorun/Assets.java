@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
@@ -129,11 +128,11 @@ public class Assets implements Disposable, AssetErrorListener {
     }
 
     public class AssetFish {
-        public final TextureRegion yellow;
-        public final TextureRegion blue;
-        public final TextureRegion red;
-        public final TextureRegion purple;
-        public final TextureRegion uni;
+        public final AtlasRegion yellow;
+        public final AtlasRegion blue;
+        public final AtlasRegion red;
+        public final AtlasRegion purple;
+        public final AtlasRegion uni;
 
         public AssetFish() {
             yellow = atlas.findRegion("fish_yellow");
@@ -147,7 +146,7 @@ public class Assets implements Disposable, AssetErrorListener {
     public class AssetBoss {
         public final Animation<AtlasRegion> normal;
         public final Animation<AtlasRegion> angry;
-        public final TextureRegion dead;
+        public final AtlasRegion dead;
 
         public AssetBoss() {
             normal = new Animation<>(1.0f, atlas.findRegions("boss_normal"));

@@ -52,7 +52,7 @@ public class GameScreen extends AbstractGameScreen {
         stateTimer = 0f;
 
         nekoWalk = Assets.instance.neko.walkAnimation;
-        bulletTexture = Assets.instance.bullet.green.get(1);
+        bulletTexture = Assets.instance.bullet.blue.get(1);
 
         background = Assets.instance.background.hills;
         backgroundOffsets = new float[5];

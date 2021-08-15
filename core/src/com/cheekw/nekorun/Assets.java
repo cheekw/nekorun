@@ -26,7 +26,8 @@ public class Assets implements Disposable, AssetErrorListener {
     public AssetFish fish;
     public AssetBoss boss;
     public AssetBackground background;
-    public AsssetBullets bullet;
+    public AssetBullets bullet;
+    public AssetHearts hearts;
 
     private AssetManager assetManager;
 
@@ -53,7 +54,8 @@ public class Assets implements Disposable, AssetErrorListener {
         fish = new AssetFish();
         boss = new AssetBoss();
         background = new AssetBackground();
-        bullet = new AsssetBullets();
+        bullet = new AssetBullets();
+        hearts = new AssetHearts();
     }
 
     @Override
@@ -164,12 +166,45 @@ public class Assets implements Disposable, AssetErrorListener {
         }
     }
 
+    public class AssetHearts {
+        public final AtlasRegion filled;
+        public final AtlasRegion empty;
 
-    public class AsssetBullets {
+        public AssetHearts() {
+            filled = atlas.findRegion("heart_filled");
+            empty = atlas.findRegion("heart_empty");
+        }
+    }
+
+    public class AssetBullets {
+        public final Array<AtlasRegion> blue;
+        public final Array<AtlasRegion> water;
+        public final Array<AtlasRegion> cyan;
+        public final Array<AtlasRegion> mint;
         public final Array<AtlasRegion> green;
+        public final Array<AtlasRegion> lime;
+        public final Array<AtlasRegion> yellow;
+        public final Array<AtlasRegion> orange;
+        public final Array<AtlasRegion> fire;
+        public final Array<AtlasRegion> magenta;
+        public final Array<AtlasRegion> purple;
+        public final Array<AtlasRegion> red;
+        public final Array<AtlasRegion> black;
 
-        public AsssetBullets() {
+        public AssetBullets() {
+            blue = atlas.findRegions("bullet_blue");
+            water = atlas.findRegions("bullet_water");
+            cyan = atlas.findRegions("bullet_cyan");
+            mint = atlas.findRegions("bullet_mint");
             green = atlas.findRegions("bullet_green");
+            lime = atlas.findRegions("bullet_lime");
+            yellow = atlas.findRegions("bullet_yellow");
+            orange = atlas.findRegions("bullet_orange");
+            fire = atlas.findRegions("bullet_fire");
+            magenta = atlas.findRegions("bullet_magenta");
+            purple = atlas.findRegions("bullet_purple");
+            red = atlas.findRegions("bullet_red");
+            black = atlas.findRegions("bullet_black");
         }
     }
 

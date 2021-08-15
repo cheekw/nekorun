@@ -124,7 +124,7 @@ public class GameScreen extends AbstractGameScreen {
 
     private void renderBullets() {
         for (Rectangle bullet : bullets) {
-            game.batch.draw(bulletTexture, bullet.x, bullet.y, 16, 16);
+            game.batch.draw(bulletTexture, bullet.x, bullet.y, 8, 8);
         }
     }
 
@@ -135,14 +135,14 @@ public class GameScreen extends AbstractGameScreen {
         GlyphLayout lifeLayout = new GlyphLayout(normalFont, lifeText);
 
         normalFont.draw(game.batch, fishEatenText, 4, Constants.GAME_HEIGHT - 4);
-        normalFont.draw(game.batch, lifeText, 4, Constants.GAME_HEIGHT - fishEatenLayout.height - 8);
-        float y = Constants.GAME_HEIGHT - fishEatenLayout.height - 20;
+        normalFont.draw(game.batch, lifeText, 4, Constants.GAME_HEIGHT - fishEatenLayout.height - 10);
+        float y = Constants.GAME_HEIGHT - fishEatenLayout.height - 8 - 14;
         for (int i = 0; i < 3; i++) {
-            float x = 2 + lifeLayout.width + i * 16 + i * 2;
+            float x = 2 + lifeLayout.width + i * 20 + i * 2;
             if (life >= i + 1) {
-                game.batch.draw(heartFilled, x, y, 16.0f, 16.0f);
+                game.batch.draw(heartFilled, x, y, 20.0f, 14.0f);
             } else {
-                game.batch.draw(heartEmpty, x, y, 16.0f, 16.0f);
+                game.batch.draw(heartEmpty, x, y, 20.0f, 14.0f);
             }
         }
 

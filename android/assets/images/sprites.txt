@@ -1,5 +1,5 @@
 sprites.png
-size: 1024, 1696
+size: 1024, 1664
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -692,412 +692,412 @@ fish_yellow
 heart_empty
   rotate: false
   xy: 172, 1600
-  size: 32, 32
-  orig: 32, 32
+  size: 19, 16
+  orig: 19, 16
   offset: 0, 0
   index: -1
 heart_filled
   rotate: false
-  xy: 204, 1600
-  size: 32, 32
-  orig: 32, 32
+  xy: 191, 1600
+  size: 19, 16
+  orig: 19, 16
   offset: 0, 0
   index: -1
 neko_clean
   rotate: false
-  xy: 236, 1600
+  xy: 210, 1600
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 0
 neko_clean
   rotate: false
-  xy: 268, 1600
+  xy: 242, 1600
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
 neko_clean
   rotate: false
-  xy: 300, 1600
+  xy: 274, 1600
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
 neko_clean
   rotate: false
-  xy: 332, 1600
+  xy: 306, 1600
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
 neko_confused
   rotate: false
-  xy: 364, 1600
+  xy: 338, 1600
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 0
 neko_confused
   rotate: false
-  xy: 396, 1600
+  xy: 370, 1600
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
 neko_confused
   rotate: false
-  xy: 428, 1600
+  xy: 402, 1600
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
 neko_confused
   rotate: false
-  xy: 460, 1600
+  xy: 434, 1600
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
 neko_jump
   rotate: false
-  xy: 492, 1600
+  xy: 466, 1600
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 0
 neko_jump
   rotate: false
-  xy: 524, 1600
+  xy: 498, 1600
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
 neko_jump
   rotate: false
-  xy: 556, 1600
+  xy: 530, 1600
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
 neko_jump
   rotate: false
-  xy: 588, 1600
+  xy: 562, 1600
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
 neko_jump
   rotate: false
-  xy: 620, 1600
+  xy: 594, 1600
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 4
 neko_jump
   rotate: false
-  xy: 652, 1600
+  xy: 626, 1600
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 5
 neko_jump
   rotate: false
-  xy: 684, 1600
+  xy: 658, 1600
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 6
 neko_lick
   rotate: false
-  xy: 716, 1600
+  xy: 690, 1600
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 0
 neko_lick
   rotate: false
-  xy: 748, 1600
+  xy: 722, 1600
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
 neko_lick
   rotate: false
-  xy: 780, 1600
+  xy: 754, 1600
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
 neko_lick
   rotate: false
-  xy: 812, 1600
+  xy: 786, 1600
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
 neko_poke
   rotate: false
-  xy: 844, 1600
+  xy: 818, 1600
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 0
 neko_poke
   rotate: false
-  xy: 876, 1600
+  xy: 850, 1600
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
 neko_poke
   rotate: false
-  xy: 908, 1600
+  xy: 882, 1600
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
 neko_poke
   rotate: false
-  xy: 940, 1600
+  xy: 914, 1600
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
 neko_poke
   rotate: false
-  xy: 972, 1600
+  xy: 946, 1600
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 4
 neko_poke
   rotate: false
-  xy: 0, 1632
+  xy: 978, 1600
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 5
+neko_run
+  rotate: false
+  xy: 0, 1632
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 0
 neko_run
   rotate: false
   xy: 32, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 0
+  index: 1
 neko_run
   rotate: false
   xy: 64, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 1
+  index: 2
 neko_run
   rotate: false
   xy: 96, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 2
+  index: 3
 neko_run
   rotate: false
   xy: 128, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 3
+  index: 4
 neko_run
   rotate: false
   xy: 160, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 4
+  index: 5
 neko_run
   rotate: false
   xy: 192, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 5
+  index: 6
 neko_run
   rotate: false
   xy: 224, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 6
-neko_run
+  index: 7
+neko_scared
   rotate: false
   xy: 256, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 7
+  index: 0
 neko_scared
   rotate: false
   xy: 288, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 0
+  index: 1
 neko_scared
   rotate: false
   xy: 320, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 1
+  index: 2
 neko_scared
   rotate: false
   xy: 352, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 2
+  index: 3
 neko_scared
   rotate: false
   xy: 384, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 3
+  index: 4
 neko_scared
   rotate: false
   xy: 416, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 4
+  index: 5
 neko_scared
   rotate: false
   xy: 448, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 5
+  index: 6
 neko_scared
   rotate: false
   xy: 480, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 6
-neko_scared
+  index: 7
+neko_sit
   rotate: false
   xy: 512, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 7
+  index: 0
 neko_sit
   rotate: false
   xy: 544, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 0
+  index: 1
 neko_sit
   rotate: false
   xy: 576, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 1
+  index: 2
 neko_sit
   rotate: false
   xy: 608, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 2
-neko_sit
+  index: 3
+neko_sleep
   rotate: false
   xy: 640, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 3
+  index: 0
 neko_sleep
   rotate: false
   xy: 672, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 0
+  index: 1
 neko_sleep
   rotate: false
   xy: 704, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 1
+  index: 2
 neko_sleep
   rotate: false
   xy: 736, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 2
-neko_sleep
-  rotate: false
-  xy: 768, 1632
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
   index: 3
 neko_walk
   rotate: false
-  xy: 800, 1632
+  xy: 768, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 0
 neko_walk
   rotate: false
-  xy: 832, 1632
+  xy: 800, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
 neko_walk
   rotate: false
-  xy: 864, 1632
+  xy: 832, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
 neko_walk
   rotate: false
-  xy: 896, 1632
+  xy: 864, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
 neko_walk
   rotate: false
-  xy: 928, 1632
+  xy: 896, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 4
 neko_walk
   rotate: false
-  xy: 960, 1632
+  xy: 928, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 5
 neko_walk
   rotate: false
-  xy: 992, 1632
+  xy: 960, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 6
 neko_walk
   rotate: false
-  xy: 0, 1664
+  xy: 992, 1632
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

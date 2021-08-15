@@ -22,5 +22,5 @@ iOS
 ./gradlew ios:launchIPhoneSimulator
 ```
 RIP </br>
-In dedication to my cat </br>
+In dedication to my cats </br>
 Forever wandering amongst all the fish

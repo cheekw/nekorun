@@ -2,7 +2,7 @@
 
 I wonder where my cat is...
 
-## Start Game
+### Start Game
 
 HTML
 ```bash

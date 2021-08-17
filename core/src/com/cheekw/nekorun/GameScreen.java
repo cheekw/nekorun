@@ -19,62 +19,66 @@ import com.badlogic.gdx.utils.TimeUtils;
 import java.util.Iterator;
 
 public class GameScreen extends AbstractGameScreen {
+
+    // screen
     private OrthographicCamera camera;
 
+    // graphics
     private Array<AtlasRegion> background;
-
-    private float[] backgroundOffsets;
-    private float backgroundMaxScrollingSpeed;
-
-    private Array<Rectangle> bullets;
-    private Animation<AtlasRegion> nekoWalk;
-    private float stateTimer;
-
     private TextureRegion bulletTexture;
     private TextureRegion heartFilled;
     private TextureRegion heartEmpty;
-    private Sound bulletSound;
+    private Animation<AtlasRegion> nekoWalk;
+    private BitmapFont normalFont;
 
+    // timing
+    private float[] backgroundOffsets;
+    private float backgroundMaxScrollingSpeed;
+    private float stateTimer;
+    private long lastBulletTime;
+
+    // sound
+    private Sound bulletSound;
     private Music music;
 
-    private Rectangle neko;
-    private long lastBulletTime;
+    // state
     private int fishEaten;
     private int life;
 
-
-    private BitmapFont normalFont;
+    // objects
+    private Array<Rectangle> bullets;
+    private Rectangle neko;
 
     public GameScreen(final NekoRun game) {
         super(game);
-        normalFont = Assets.instance.fonts.small;
-
-        life = 3;
-        fishEaten = 0;
-        stateTimer = 0f;
-
-        nekoWalk = Assets.instance.neko.walkAnimation;
-        bulletTexture = Assets.instance.bullet.blue.get(1);
-
-        heartFilled = Assets.instance.hearts.filled;
-        heartEmpty = Assets.instance.hearts.empty;
-
-        background = Assets.instance.background.redMountains;
-        backgroundOffsets = new float[5];
-
-        backgroundMaxScrollingSpeed = Constants.GAME_WIDTH / 16.0f;
-
-        bulletSound = Assets.instance.sounds.hit;
-        music = Assets.instance.music.music;
 
         // create the camera and the SpriteBatch
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
 
-        // create a Rectangle to logically represent the bucket
-        neko = new Rectangle(Constants.GAME_WIDTH / 10f, Constants.GAME_HEIGHT / 2f, 16.0f, 16.0f);
+        // background
+        background = Assets.instance.background.redMountains;
+        backgroundOffsets = new float[5];
+        backgroundMaxScrollingSpeed = Constants.GAME_WIDTH / 16.0f;
+
+        normalFont = Assets.instance.fonts.small;
+
+        heartFilled = Assets.instance.hearts.filled;
+        heartEmpty = Assets.instance.hearts.empty;
+
+        music = Assets.instance.music.music;
 
         bullets = new Array<>();
+        bulletTexture = Assets.instance.bullet.blue.get(1);
+        bulletSound = Assets.instance.sounds.hit;
+
+        // create a Rectangle to logically represent the neko
+        neko = new Rectangle(Constants.GAME_WIDTH / 10f, Constants.GAME_HEIGHT / 2f, 16.0f, 16.0f);
+        nekoWalk = Assets.instance.neko.walkAnimation;
+
+        life = 3;
+        fishEaten = 0;
+        stateTimer = 0.0f;
     }
 
     private void spawnWaterBullet() {
@@ -92,11 +96,9 @@ public class GameScreen extends AbstractGameScreen {
         // clear the screen with a dark blue color
         ScreenUtils.clear(0, 0, 0.2f, 1);
 
-        // tell the camera to update its matrices
+        // tell the camera to update matrices
         camera.update();
-
-        // tell the SpriteBatch to render in the coordinate system specified by camera
-//        game.batch.setProjectionMatrix(camera.combined);
+        game.batch.setProjectionMatrix(camera.combined);
 
         // begin a new batch
         game.batch.begin();
@@ -145,8 +147,6 @@ public class GameScreen extends AbstractGameScreen {
                 game.batch.draw(heartEmpty, x, y, 20.0f, 14.0f);
             }
         }
-
-
     }
 
     private void controlBullets() {
@@ -196,7 +196,7 @@ public class GameScreen extends AbstractGameScreen {
         }
 
         for (int i = 0; i < backgroundOffsets.length; i++) {
-            if (backgroundOffsets[i] > Constants.GAME_WIDTH) {
+            if (backgroundOffsets[i] >= Constants.GAME_WIDTH) {
                 backgroundOffsets[i] = 0;
             }
             float backgroundWidth = background.get(i).getRegionWidth();
@@ -220,6 +220,8 @@ public class GameScreen extends AbstractGameScreen {
 
     @Override
     public void resize(int width, int height) {
+//        viewport.update(width, height);
+//        game.batch.setProjectionMatrix(camera.combined);
     }
 
     @Override

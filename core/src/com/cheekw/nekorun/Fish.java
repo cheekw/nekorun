@@ -20,9 +20,8 @@ public class Fish {
     }
 
     public void draw(Batch batch) {
-        float height = boundingBox.getHeight();
-        float width = boundingBox.getWidth() * fishTexture.getRegionHeight() / boundingBox.getHeight();
-        batch.draw(fishTexture, boundingBox.getX(), boundingBox.getY(), width, height);
+        batch.draw(fishTexture, boundingBox.getX(), boundingBox.getY(),
+                boundingBox.getWidth(), boundingBox.getHeight());
     }
 
     public Rectangle getBoundingBox() {

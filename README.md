@@ -2,6 +2,8 @@
 
 I wonder where my cat is...
 
+![game demo](demo.gif)
+
 ### Start Game
 
 HTML

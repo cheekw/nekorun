@@ -74,8 +74,8 @@ public class GameScreen extends AbstractGameScreen {
     }
 
     private void spawnFish() {
-        float width = 16.0f;
-        float height = 16.0f;
+        float width = 24.0f;
+        float height = 12.0f;
         float x = Constants.GAME_WIDTH + width;
         float y = MathUtils.random(0, Constants.GAME_HEIGHT);
         float movementSpeed = -MathUtils.random(150.0f, 400.0f);
@@ -90,10 +90,10 @@ public class GameScreen extends AbstractGameScreen {
         float height = 8.0f;
         float x = Constants.GAME_WIDTH + width;
         float y = MathUtils.random(0, Constants.GAME_HEIGHT);
-        float movementSpeed = -MathUtils.random(250.0f, 350.0f);
+        float movementSpeed = -MathUtils.random(100.0f, 200.0f);
 
         bullets.add(new Bullet(x, y, width, height,
-                movementSpeed, Assets.instance.bullet.fire.get(1)));
+                movementSpeed, Assets.instance.bullet.water.get(1)));
         lastBulletTime = TimeUtils.nanoTime();
     }
 
@@ -247,7 +247,7 @@ public class GameScreen extends AbstractGameScreen {
                     - (getSpeedScalar(delta) * backgroundMaxScrollingSpeed / i);
         }
 
-        for (int i = 2; i < backgroundOffsets.length; i++) {
+        for (int i = 0; i < backgroundOffsets.length; i++) {
             if (backgroundOffsets[i] > Constants.GAME_WIDTH) {
                 backgroundOffsets[i] = 0;
             }

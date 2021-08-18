@@ -23,4 +23,4 @@ iOS
 ```
 RIP </br>
 In dedication to my cats </br>
-Forever wandering amongst all the fish
+May they forever be in a delightful dream of eating fish

@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -17,37 +16,31 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 public class GameScreen extends AbstractGameScreen {
-
     // screen
     private OrthographicCamera camera;
 
     // graphics
     private Array<AtlasRegion> background;
-    private TextureRegion bulletTexture;
     private TextureRegion heartFilled;
     private TextureRegion heartEmpty;
-    private Animation<AtlasRegion> nekoWalk;
     private BitmapFont normalFont;
 
     // timing
     private float[] backgroundOffsets;
     private float backgroundMaxScrollingSpeed;
-    private float stateTimer;
     private long lastBulletTime;
 
     // sound
     private Sound bulletSound;
     private Music music;
 
-    // state
-    private int fishEaten;
-    private int life;
-
-    // objects
-    private Array<Rectangle> bullets;
-    private Rectangle neko;
+    // game objects
+    private Neko player;
+    private List<Bullet> bullets;
 
     public GameScreen(final NekoRun game) {
         super(game);
@@ -68,26 +61,23 @@ public class GameScreen extends AbstractGameScreen {
 
         music = Assets.instance.music.music;
 
-        bullets = new Array<>();
-        bulletTexture = Assets.instance.bullet.blue.get(1);
+        bullets = new LinkedList<>();
         bulletSound = Assets.instance.sounds.hit;
 
-        // create a Rectangle to logically represent the neko
-        neko = new Rectangle(Constants.GAME_WIDTH / 10f, Constants.GAME_HEIGHT / 2f, 16.0f, 16.0f);
-        nekoWalk = Assets.instance.neko.walkAnimation;
-
-        life = 3;
-        fishEaten = 0;
-        stateTimer = 0.0f;
+        player = new Neko(Constants.GAME_WIDTH / 10f,
+                Constants.GAME_HEIGHT / 2f,
+                16.0f, 16.0f);
     }
 
     private void spawnWaterBullet() {
-        Rectangle bullet = new Rectangle();
-        bullet.width = 16;
-        bullet.height = 16;
-        bullet.x = Constants.GAME_WIDTH + bullet.width;
-        bullet.y = MathUtils.random(0, Constants.GAME_HEIGHT);;
-        bullets.add(bullet);
+        float width = 8.0f;
+        float height = 8.0f;
+        float x = Constants.GAME_WIDTH + width;
+        float y = MathUtils.random(0, Constants.GAME_HEIGHT);
+        float movementSpeed = -300.0f;
+
+        bullets.add(new Bullet(x, y, width, height,
+                movementSpeed, Assets.instance.bullet.water.get(1)));
         lastBulletTime = TimeUtils.nanoTime();
     }
 
@@ -110,28 +100,28 @@ public class GameScreen extends AbstractGameScreen {
 
         game.batch.end();
 
-        controlNeko();
-        controlBullets();
+        controlPlayer(delta);
+        controlBullets(delta);
 
-        if (life < 1) {
+        if (player.getLives() < 1) {
             game.setScreen(new MainMenuScreen(game));
             dispose();
         }
     }
 
     private void renderNeko(float delta) {
-        game.batch.draw(nekoWalk.getKeyFrame(stateTimer, true), neko.x, neko.y);
-        stateTimer += delta;
+        player.update(delta);
+        player.draw(game.batch);
     }
 
     private void renderBullets() {
-        for (Rectangle bullet : bullets) {
-            game.batch.draw(bulletTexture, bullet.x, bullet.y, 8, 8);
+        for (Bullet bullet : bullets) {
+            bullet.draw(game.batch);
         }
     }
 
     private void renderHud() {
-        String fishEatenText = "fish eaten: " + fishEaten;
+        String fishEatenText = "fish eaten: " + player.getFishEaten();
         String lifeText = "life: ";
         GlyphLayout fishEatenLayout = new GlyphLayout(normalFont, fishEatenText);
         GlyphLayout lifeLayout = new GlyphLayout(normalFont, lifeText);
@@ -141,7 +131,7 @@ public class GameScreen extends AbstractGameScreen {
         float y = Constants.GAME_HEIGHT - fishEatenLayout.height - 8 - 14;
         for (int i = 0; i < 3; i++) {
             float x = 2 + lifeLayout.width + i * 20 + i * 2;
-            if (life >= i + 1) {
+            if (player.getLives() >= i + 1) {
                 game.batch.draw(heartFilled, x, y, 20.0f, 14.0f);
             } else {
                 game.batch.draw(heartEmpty, x, y, 20.0f, 14.0f);
@@ -149,44 +139,57 @@ public class GameScreen extends AbstractGameScreen {
         }
     }
 
-    private void controlBullets() {
+    private void controlBullets(float delta) {
         if (TimeUtils.nanoTime() - lastBulletTime > 250000000) {
             spawnWaterBullet();
         }
 
-        Iterator<Rectangle> iter = bullets.iterator();
+        Iterator<Bullet> iter = bullets.iterator();
         while (iter.hasNext()) {
-            Rectangle bullet = iter.next();
-            bullet.x -= 300 * Gdx.graphics.getDeltaTime();
-            if (bullet.x + 32 < 0)
+            Bullet curr = iter.next();
+            Rectangle bulletRectangle = curr.getBoundingBox();
+
+            float deltaX = curr.getMovementSpeed() * delta;
+            bulletRectangle.setX(bulletRectangle.getX() + deltaX);
+            if (bulletRectangle.getX() + bulletRectangle.getWidth() < 0)
                 iter.remove();
-            if (bullet.overlaps(neko)) {
-                life--;
+            if (player.intersects(bulletRectangle)) {
+                player.setLives(player.getLives() - 1);
                 bulletSound.play();
                 iter.remove();
             }
         }
     }
 
-    private void controlNeko() {
+    private void controlPlayer(float delta) {
+        // move the player
+        float movement = Neko.MOVEMENT_SPEED * delta;
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
-            neko.y += 200 * Gdx.graphics.getDeltaTime();
+            player.setY(player.getY() + movement);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)) {
-            neko.y -= 200 * Gdx.graphics.getDeltaTime();
+            player.setY(player.getY() - movement);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
-            neko.x -= 200 * Gdx.graphics.getDeltaTime();
+            player.setX(player.getX() - movement);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
-            neko.x += 200 * Gdx.graphics.getDeltaTime();
+            player.setX(player.getX() + movement);
         }
 
         // make sure the neko stays within the screen bounds
-        if (neko.x < 0) neko.x = 0;
-        if (neko.x > Constants.GAME_WIDTH - neko.width) neko.x = Constants.GAME_WIDTH - neko.width;
-        if (neko.y > Constants.GAME_HEIGHT - neko.height) neko.y = Constants.GAME_HEIGHT - neko.height;
-        if (neko.y < 0) neko.y = 0;
+        if (player.getX() < 0) {
+            player.setX(0);
+        }
+        if (player.getX() > Constants.GAME_WIDTH - player.getWidth()) {
+            player.setX(Constants.GAME_WIDTH - player.getWidth());
+        }
+        if (player.getY() > Constants.GAME_HEIGHT - player.getHeight()) {
+            player.setY(Constants.GAME_HEIGHT - player.getHeight());
+        }
+        if (player.getY() < 0) {
+            player.setY(0);
+        }
     }
 
     private void renderBackground(float delta) {
@@ -195,8 +198,8 @@ public class GameScreen extends AbstractGameScreen {
                     - (delta * backgroundMaxScrollingSpeed / i);
         }
 
-        for (int i = 0; i < backgroundOffsets.length; i++) {
-            if (backgroundOffsets[i] >= Constants.GAME_WIDTH) {
+        for (int i = 2; i < backgroundOffsets.length; i++) {
+            if (backgroundOffsets[i] > Constants.GAME_WIDTH) {
                 backgroundOffsets[i] = 0;
             }
             float backgroundWidth = background.get(i).getRegionWidth();
@@ -205,7 +208,7 @@ public class GameScreen extends AbstractGameScreen {
             float scaledHeight = backgroundHeight * Constants.GAME_WIDTH / backgroundWidth;
             game.batch.draw(background.get(i), -backgroundOffsets[i], 0,
                     scaledWidth, scaledHeight);
-            game.batch.draw(background.get(i), -backgroundOffsets[i] + Constants.GAME_WIDTH - 1, 0,
+            game.batch.draw(background.get(i), -backgroundOffsets[i] + Constants.GAME_WIDTH, 0,
                     scaledWidth, scaledHeight);
         }
     }
@@ -213,15 +216,13 @@ public class GameScreen extends AbstractGameScreen {
 
     @Override
     public void show() {
-        // play music
         music.setLooping(true);
         music.play();
     }
 
     @Override
     public void resize(int width, int height) {
-//        viewport.update(width, height);
-//        game.batch.setProjectionMatrix(camera.combined);
+        game.batch.setProjectionMatrix(camera.combined);
     }
 
     @Override

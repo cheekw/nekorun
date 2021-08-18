@@ -33,6 +33,7 @@ public class GameScreen extends AbstractGameScreen {
     private float[] backgroundOffsets;
     private float backgroundMaxScrollingSpeed;
     private long lastBulletTime;
+    private long lastFishTime;
 
     // sound
     private Sound bulletSound;
@@ -40,6 +41,7 @@ public class GameScreen extends AbstractGameScreen {
 
     // game objects
     private Neko player;
+    private List<Fish> fishes;
     private List<Bullet> bullets;
 
     public GameScreen(final NekoRun game) {
@@ -67,6 +69,20 @@ public class GameScreen extends AbstractGameScreen {
         player = new Neko(Constants.GAME_WIDTH / 10f,
                 Constants.GAME_HEIGHT / 2f,
                 16.0f, 16.0f);
+
+        fishes = new LinkedList<>();
+    }
+
+    private void spawnFish() {
+        float width = 16.0f;
+        float height = 16.0f;
+        float x = Constants.GAME_WIDTH + width;
+        float y = MathUtils.random(0, Constants.GAME_HEIGHT);
+        float movementSpeed = -MathUtils.random(150.0f, 400.0f);
+
+        fishes.add(new Fish(x, y, width, height,
+                movementSpeed, Assets.instance.fish.purple));
+        lastFishTime = TimeUtils.nanoTime();
     }
 
     private void spawnWaterBullet() {
@@ -74,7 +90,7 @@ public class GameScreen extends AbstractGameScreen {
         float height = 8.0f;
         float x = Constants.GAME_WIDTH + width;
         float y = MathUtils.random(0, Constants.GAME_HEIGHT);
-        float movementSpeed = -300.0f;
+        float movementSpeed = -MathUtils.random(250.0f, 350.0f);
 
         bullets.add(new Bullet(x, y, width, height,
                 movementSpeed, Assets.instance.bullet.water.get(1)));
@@ -96,12 +112,15 @@ public class GameScreen extends AbstractGameScreen {
         renderBackground(delta);
         renderHud();
         renderBullets();
-        renderNeko(delta);
+        renderFish();
+        renderPlayer(delta);
 
         game.batch.end();
 
-        controlPlayer(delta);
         controlBullets(delta);
+        controlFish(delta);
+        controlPlayer(delta);
+
 
         if (player.getLives() < 1) {
             game.setScreen(new MainMenuScreen(game));
@@ -109,56 +128,36 @@ public class GameScreen extends AbstractGameScreen {
         }
     }
 
-    private void renderNeko(float delta) {
+    private void renderFish() {
+        for (Fish fish : fishes) {
+            fish.draw(game.batch);
+        }
+    }
+
+    private void controlFish(float delta) {
+        if (TimeUtils.nanoTime() - lastFishTime > 500000000) {
+            spawnFish();
+        }
+
+        Iterator<Fish> iter = fishes.iterator();
+        while (iter.hasNext()) {
+            Fish curr = iter.next();
+            Rectangle fishRectangle = curr.getBoundingBox();
+
+            float deltaX = curr.getMovementSpeed() * getSpeedScalar(delta);
+            fishRectangle.setX(fishRectangle.getX() + deltaX);
+            if (fishRectangle.getX() + fishRectangle.getWidth() < 0)
+                iter.remove();
+            if (player.intersects(fishRectangle)) {
+                player.setFishEaten(player.getFishEaten() + 1);
+                iter.remove();
+            }
+        }
+    }
+
+    private void renderPlayer(float delta) {
         player.update(delta);
         player.draw(game.batch);
-    }
-
-    private void renderBullets() {
-        for (Bullet bullet : bullets) {
-            bullet.draw(game.batch);
-        }
-    }
-
-    private void renderHud() {
-        String fishEatenText = "fish eaten: " + player.getFishEaten();
-        String lifeText = "life: ";
-        GlyphLayout fishEatenLayout = new GlyphLayout(normalFont, fishEatenText);
-        GlyphLayout lifeLayout = new GlyphLayout(normalFont, lifeText);
-
-        normalFont.draw(game.batch, fishEatenText, 4, Constants.GAME_HEIGHT - 4);
-        normalFont.draw(game.batch, lifeText, 4, Constants.GAME_HEIGHT - fishEatenLayout.height - 10);
-        float y = Constants.GAME_HEIGHT - fishEatenLayout.height - 8 - 14;
-        for (int i = 0; i < 3; i++) {
-            float x = 2 + lifeLayout.width + i * 20 + i * 2;
-            if (player.getLives() >= i + 1) {
-                game.batch.draw(heartFilled, x, y, 20.0f, 14.0f);
-            } else {
-                game.batch.draw(heartEmpty, x, y, 20.0f, 14.0f);
-            }
-        }
-    }
-
-    private void controlBullets(float delta) {
-        if (TimeUtils.nanoTime() - lastBulletTime > 250000000) {
-            spawnWaterBullet();
-        }
-
-        Iterator<Bullet> iter = bullets.iterator();
-        while (iter.hasNext()) {
-            Bullet curr = iter.next();
-            Rectangle bulletRectangle = curr.getBoundingBox();
-
-            float deltaX = curr.getMovementSpeed() * delta;
-            bulletRectangle.setX(bulletRectangle.getX() + deltaX);
-            if (bulletRectangle.getX() + bulletRectangle.getWidth() < 0)
-                iter.remove();
-            if (player.intersects(bulletRectangle)) {
-                player.setLives(player.getLives() - 1);
-                bulletSound.play();
-                iter.remove();
-            }
-        }
     }
 
     private void controlPlayer(float delta) {
@@ -192,10 +191,61 @@ public class GameScreen extends AbstractGameScreen {
         }
     }
 
+    private void renderBullets() {
+        for (Bullet bullet : bullets) {
+            bullet.draw(game.batch);
+        }
+    }
+
+    private void controlBullets(float delta) {
+        if (TimeUtils.nanoTime() - lastBulletTime > 250000000) {
+            spawnWaterBullet();
+        }
+
+        Iterator<Bullet> iter = bullets.iterator();
+        while (iter.hasNext()) {
+            Bullet curr = iter.next();
+            Rectangle bulletRectangle = curr.getBoundingBox();
+
+            float deltaX = curr.getMovementSpeed() * getSpeedScalar(delta);
+            bulletRectangle.setX(bulletRectangle.getX() + deltaX);
+            if (bulletRectangle.getX() + bulletRectangle.getWidth() < 0)
+                iter.remove();
+            if (player.intersects(bulletRectangle)) {
+                player.setLives(player.getLives() - 1);
+                bulletSound.play();
+                iter.remove();
+            }
+        }
+    }
+
+    private void renderHud() {
+        String fishEatenText = "fish eaten: " + player.getFishEaten() + " / 100";
+        String lifeText = "life: ";
+        GlyphLayout fishEatenLayout = new GlyphLayout(normalFont, fishEatenText);
+        GlyphLayout lifeLayout = new GlyphLayout(normalFont, lifeText);
+
+        normalFont.draw(game.batch, fishEatenText, 4, Constants.GAME_HEIGHT - 4);
+        normalFont.draw(game.batch, lifeText, 4, Constants.GAME_HEIGHT - fishEatenLayout.height - 10);
+        float y = Constants.GAME_HEIGHT - fishEatenLayout.height - 8 - 14;
+        for (int i = 0; i < 3; i++) {
+            float x = 2 + lifeLayout.width + i * 20 + i * 2;
+            if (player.getLives() >= i + 1) {
+                game.batch.draw(heartFilled, x, y, 20.0f, 14.0f);
+            } else {
+                game.batch.draw(heartEmpty, x, y, 20.0f, 14.0f);
+            }
+        }
+    }
+
+    private float getSpeedScalar(float delta) {
+        return delta;
+    }
+
     private void renderBackground(float delta) {
         for (int i = 1; i < backgroundOffsets.length; i++) {
-            backgroundOffsets[i] += (delta * backgroundMaxScrollingSpeed)
-                    - (delta * backgroundMaxScrollingSpeed / i);
+            backgroundOffsets[i] += (getSpeedScalar(delta) * backgroundMaxScrollingSpeed)
+                    - (getSpeedScalar(delta) * backgroundMaxScrollingSpeed / i);
         }
 
         for (int i = 2; i < backgroundOffsets.length; i++) {
@@ -212,7 +262,6 @@ public class GameScreen extends AbstractGameScreen {
                     scaledWidth, scaledHeight);
         }
     }
-
 
     @Override
     public void show() {

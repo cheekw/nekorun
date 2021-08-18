@@ -81,7 +81,7 @@ public class GameScreen extends AbstractGameScreen {
         float movementSpeed = -MathUtils.random(150.0f, 400.0f);
 
         fishes.add(new Fish(x, y, width, height,
-                movementSpeed, Assets.instance.fish.purple));
+                movementSpeed, Assets.instance.fish.blue));
         lastFishTime = TimeUtils.nanoTime();
     }
 
@@ -93,7 +93,7 @@ public class GameScreen extends AbstractGameScreen {
         float movementSpeed = -MathUtils.random(250.0f, 350.0f);
 
         bullets.add(new Bullet(x, y, width, height,
-                movementSpeed, Assets.instance.bullet.water.get(1)));
+                movementSpeed, Assets.instance.bullet.fire.get(1)));
         lastBulletTime = TimeUtils.nanoTime();
     }
 
@@ -111,8 +111,8 @@ public class GameScreen extends AbstractGameScreen {
 
         renderBackground(delta);
         renderHud();
-        renderBullets();
         renderFish();
+        renderBullets();
         renderPlayer(delta);
 
         game.batch.end();
@@ -120,7 +120,6 @@ public class GameScreen extends AbstractGameScreen {
         controlBullets(delta);
         controlFish(delta);
         controlPlayer(delta);
-
 
         if (player.getLives() < 1) {
             game.setScreen(new MainMenuScreen(game));

@@ -73,9 +73,11 @@ public class Assets implements Disposable, AssetErrorListener {
 
     public class AssetSounds {
         public final Sound hit;
+        public final Sound meow;
 
         public AssetSounds() {
             hit = Gdx.audio.newSound(Gdx.files.internal(Constants.HIT_SOUND_PATH));
+            meow = Gdx.audio.newSound(Gdx.files.internal(Constants.MEOW_SOUND_PATH));
         }
     }
 

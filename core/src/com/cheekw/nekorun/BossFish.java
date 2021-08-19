@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Rectangle;
 
 public class BossFish {
-    public enum State { ANGRY, NORRMAL };
+    public enum State { ANGRY, NORMAL };
 
     private Animation<AtlasRegion> bossAnimation;
     private Rectangle boundingBox;

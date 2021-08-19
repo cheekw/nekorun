@@ -36,6 +36,7 @@ public class GameScreen extends AbstractGameScreen {
     private long lastFishTime;
 
     // sound
+    private Sound meowSound;
     private Sound bulletSound;
     private Music music;
 
@@ -69,6 +70,7 @@ public class GameScreen extends AbstractGameScreen {
         player = new Neko(Constants.GAME_WIDTH / 10f,
                 Constants.GAME_HEIGHT / 2f,
                 16.0f, 16.0f);
+        meowSound = Assets.instance.sounds.meow;
 
         fishes = new LinkedList<>();
     }
@@ -149,6 +151,7 @@ public class GameScreen extends AbstractGameScreen {
                 iter.remove();
             if (player.intersects(fishRectangle)) {
                 player.setFishEaten(player.getFishEaten() + 1);
+                meowSound.play(100.0f);
                 iter.remove();
             }
         }
@@ -265,6 +268,7 @@ public class GameScreen extends AbstractGameScreen {
     @Override
     public void show() {
         music.setLooping(true);
+        music.setVolume(0.75f);
         music.play();
     }
 

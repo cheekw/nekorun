@@ -123,7 +123,7 @@ public class GameScreen extends AbstractGameScreen {
         controlFish(delta);
         controlPlayer(delta);
 
-        if (player.getLives() < 1) {
+        if (player.getLives() < 1 || player.getFishEaten() >= 100) {
             game.setScreen(new MainMenuScreen(game));
             dispose();
         }

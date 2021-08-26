@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -20,6 +22,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class GameScreen extends AbstractGameScreen {
+    private static final float TOUCH_MOVEMENT_THRESHOLD = 0.5f;
+
     // screen
     private OrthographicCamera camera;
 
@@ -176,6 +180,31 @@ public class GameScreen extends AbstractGameScreen {
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
             player.setX(player.getX() + movement);
+        }
+
+        if (Gdx.input.isTouched()) {
+            float xTouch = Gdx.input.getX();
+            float yTouch = Gdx.input.getY();
+            Vector3 touchPosition = new Vector3(xTouch, yTouch, 0);
+            camera.unproject(touchPosition);
+
+            Vector3 playerPosition = new Vector3(
+                    player.getX() + player.getWidth() / 2,
+                    player.getY() + player.getHeight() / 2,
+                    0);
+
+            float touchDistance = touchPosition.dst(playerPosition);
+            if (touchDistance > TOUCH_MOVEMENT_THRESHOLD) {
+                float xTouchDiff = touchPosition.x - player.getX();
+                float yTouchDiff = touchPosition.y - player.getY();
+
+                float xMove = xTouchDiff / touchDistance * Neko.MOVEMENT_SPEED * delta;
+                float yMove = yTouchDiff / touchDistance * Neko.MOVEMENT_SPEED * delta;
+
+//                player.setX(player.getX() + xMove);
+//                player.setY(player.getY() + yMove);
+            }
+
         }
 
         // make sure the neko stays within the screen bounds

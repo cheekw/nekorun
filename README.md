@@ -4,6 +4,11 @@ I wonder where my cat is...
 
 ![game demo](demo.gif)
 
+### Prerequisite
+
+Java Development Kit (JDK) 7+</br>
+I would recommend to get [AdoptOpenJDK](https://adoptopenjdk.net)
+
 ### Start Game
 
 HTML

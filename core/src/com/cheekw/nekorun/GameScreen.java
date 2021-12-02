@@ -48,6 +48,7 @@ public class GameScreen extends AbstractGameScreen {
     private Neko player;
     private List<Fish> fishes;
     private List<Bullet> bullets;
+    private BossFish bossFish;
 
     public GameScreen(final NekoRun game) {
         super(game);
@@ -77,6 +78,8 @@ public class GameScreen extends AbstractGameScreen {
         meowSound = Assets.instance.sounds.meow;
 
         fishes = new LinkedList<>();
+        bossFish = new BossFish(Constants.GAME_WIDTH, 0, Constants.GAME_WIDTH / 3f, Constants.GAME_HEIGHT, 0);
+        bossFish.setX(Constants.GAME_WIDTH - bossFish.getWidth());
     }
 
     private void spawnFish() {
@@ -117,20 +120,30 @@ public class GameScreen extends AbstractGameScreen {
 
         renderBackground(delta);
         renderHud();
-        renderFish();
-        renderBullets();
+
+        if (player.getFishEaten() < 99) {
+            renderFish();
+            controlFish(delta);
+            renderBullets();
+            controlBullets(delta);
+        }
+        if (player.getFishEaten() == 99) {
+            renderBossFish();
+        }
+
         renderPlayer(delta);
+        controlPlayer(delta);
 
         game.batch.end();
-
-        controlBullets(delta);
-        controlFish(delta);
-        controlPlayer(delta);
 
         if (player.getLives() < 1 || player.getFishEaten() >= 100) {
             game.setScreen(new MainMenuScreen(game));
             dispose();
         }
+    }
+
+    private void renderBossFish() {
+        bossFish.draw(game.batch);
     }
 
     private void renderFish() {
